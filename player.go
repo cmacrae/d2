@@ -42,24 +42,30 @@ func (p *PlayerService) SearchDestinyPlayer(membershipType string, playerName st
 	return retData, nil
 }
 
-// GetProfile Returns Destiny profile compnent information for the supplied membership& component type.
-func (p *PlayerService) GetProfile(membershipType, membershipID, componentType string) (interface{}, error) {
+// GetProfile Returns Destiny profile compnent information for the supplied membership & component type.
+func (p *PlayerService) GetProfile(membershipType, membershipID, componentType string, i interface{}) error {
 	pfmType := BungieMembershipType[membershipType]
 	u := fmt.Sprintf("Destiny2/%d/Profile/%s?components=%s", pfmType, membershipID, componentType)
 
-	var retData interface{}
-
 	response, err := p.client.Platform.PlatformRequest("GET", u)
 	if err != nil {
-		return retData, err
+		return err
 
 	}
 
-	err = json.Unmarshal(response, &retData)
-	if err != nil {
-		return retData, err
+	if err := json.Unmarshal(response, i); err != nil {
+		return err
 	}
-	return retData, nil
+
+	return nil
+}
+
+func (p *PlayerService) GetProfileCharacters(membershipType, membershipID string) (GetProfileCharactersResponse, error) {
+	retData := &GetProfileCharactersResponse{}
+	if err := p.GetProfile(membershipType, membershipID, "Characters", retData); err != nil {
+		return *retData, err
+	}
+	return *retData, nil
 }
 
 func (p *PlayerService) GetPublicMilestoneContent(milestoneHash string) (MilestoneContent, error) {
@@ -123,7 +129,7 @@ func (p *PlayerService) GetClanWeeklyRewardState(clanID int) (ClanWeeklyRewardSt
 }
 
 //GetHistoricalStatsDefinition Returns historical stats definitions.
-func (p *PlayerService) HistoricalStatsDefinition() (HistoricalStatsDefinition, error) {
+func (p *PlayerService) GetHistoricalStatsDefinition() (HistoricalStatsDefinition, error) {
 	u := fmt.Sprintf("Destiny2/Stats/Definition/")
 
 	retData := HistoricalStatsDefinition{}

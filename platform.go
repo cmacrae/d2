@@ -5,11 +5,11 @@ import (
 	"errors"
 )
 
+const SuccessStatus = "Success"
+
 type PlatformService struct {
 	client *Client
 }
-
-const SuccessStatus = "Success"
 
 type PlatformResponse struct {
 	Response        *json.RawMessage `json: Response`

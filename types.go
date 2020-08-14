@@ -1,6 +1,8 @@
 package d2
 
-import "time"
+import (
+	"time"
+)
 
 type Milestones []Milestone
 
@@ -6093,4 +6095,54 @@ type ClanWeeklyRewardState struct {
 		RewardCategoryHash int `json:"rewardCategoryHash"`
 	} `json:"rewards"`
 	StartDate string `json:"startDate"`
+}
+
+type GetProfileCharactersResponse struct {
+	Characters struct {
+		Data    Character `json:"data"`
+		Privacy int       `json:"privacy"`
+	} `json:"characters"`
+}
+
+type Character map[string]CharacterComponent
+
+type CharacterComponent struct {
+	MembershipID             string         `json:"membershipId"`
+	MembershipType           int            `json:"membershipType"`
+	CharacterID              string         `json:"characterId"`
+	DateLastPlayed           time.Time      `json:"dateLastPlayed"`
+	MinutesPlayedThisSession string         `json:"minutesPlayedThisSession"`
+	MinutesPlayedTotal       string         `json:"minutesPlayedTotal"`
+	Light                    int            `json:"light"`
+	Stats                    map[string]int `json:"stats"`
+	RaceHash                 int64          `json:"raceHash"`
+	GenderHash               int64          `json:"genderHash"`
+	ClassHash                int            `json:"classHash"`
+	RaceType                 int            `json:"raceType"`
+	ClassType                int            `json:"classType"`
+	GenderType               int            `json:"genderType"`
+	EmblemPath               string         `json:"emblemPath"`
+	EmblemBackgroundPath     string         `json:"emblemBackgroundPath"`
+	EmblemHash               int64          `json:"emblemHash"`
+	EmblemColor              struct {
+		Red   int `json:"red"`
+		Green int `json:"green"`
+		Blue  int `json:"blue"`
+		Alpha int `json:"alpha"`
+	} `json:"emblemColor"`
+	LevelProgression struct {
+		ProgressionHash     int `json:"progressionHash"`
+		DailyProgress       int `json:"dailyProgress"`
+		DailyLimit          int `json:"dailyLimit"`
+		WeeklyProgress      int `json:"weeklyProgress"`
+		WeeklyLimit         int `json:"weeklyLimit"`
+		CurrentProgress     int `json:"currentProgress"`
+		Level               int `json:"level"`
+		LevelCap            int `json:"levelCap"`
+		StepIndex           int `json:"stepIndex"`
+		ProgressToNextLevel int `json:"progressToNextLevel"`
+		NextLevelAt         int `json:"nextLevelAt"`
+	} `json:"levelProgression"`
+	BaseCharacterLevel int     `json:"baseCharacterLevel"`
+	PercentToNextLevel float64 `json:"percentToNextLevel"`
 }
